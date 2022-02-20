@@ -3,9 +3,9 @@ pipeline {
     environment {
         AWS_ACCOUNT_ID="711327469867"
         AWS_DEFAULT_REGION="ap-south-1" 
-	CLUSTER_NAME="imagedeploy-demo"
-	SERVICE_NAME="imagedeploy-service"
-	TASK_DEFINITION_NAME="imagedeploy-task"
+	CLUSTER_NAME="ImageDeploy-Test"
+	SERVICE_NAME="ImageDeploy-Test-service"
+	TASK_DEFINITION_NAME="ImageDeploy-Task"
 	DESIRED_COUNT="1"
         IMAGE_REPO_NAME="docimage"
         IMAGE_TAG="node-latest"
@@ -45,7 +45,7 @@ pipeline {
      steps{
             withAWS(credentials: registryCredential, region: "${AWS_DEFAULT_REGION}") {
                 script {
-			sh 'script.sh'
+			sh './script.sh'
                 }
             } 
         }
