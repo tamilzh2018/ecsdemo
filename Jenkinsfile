@@ -3,23 +3,29 @@ pipeline {
     environment {
         AWS_ACCOUNT_ID="711327469867"
         AWS_DEFAULT_REGION="ap-south-1" 
-	CLUSTER_NAME="ImageDeploy-Test"
-	SERVICE_NAME="ImageDeploy-Test-service"
-	TASK_DEFINITION_NAME="ImageDeploy-Task"
+	CLUSTER_NAME="ecs-demo-cluster"
+	SERVICE_NAME="ecs-demo-cluster-service"
+	TASK_DEFINITION_NAME="ecs-demo-cluster-task"
 	DESIRED_COUNT="1"
-        IMAGE_REPO_NAME="docimage"
-        IMAGE_TAG="node-latest"
-        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
-	registryCredential = "aws-cred"
+        IMAGE_REPO_NAME="image"
+        IMAGE_TAG="${env.BUILD_ID}"
+        REPOSITORY_URI = "192.168.43.99:8081/repository/image/"
+	registryCredential = "nexus-admin"
+	registryCredentialAws = "aws-cred"
+	    
     }
    
     stages {
 
-    stage('Cloning Git') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/myPythonDockerRepo']]])     
-            }
+    // Tests
+    stage('Unit Tests') {
+      steps{
+        script {
+          sh 'npm install'
+	  sh 'npm test -- --watchAll=false'
         }
+      }
+    }
         
     // Building Docker images
     stage('Building image') {
@@ -30,20 +36,20 @@ pipeline {
       }
     }
    
-    // Uploading Docker images into AWS ECR
-    stage('Pushing to ECR') {
+    // Uploading Docker images into Nexus
+    stage('Pushing to Nexus') {
      steps{  
          script {
-			docker.withRegistry("https://" + REPOSITORY_URI, "ecr:${AWS_DEFAULT_REGION}:" + registryCredential) {
+			docker.withRegistry("http://" + REPOSITORY_URI + registryCredential) {
                     	dockerImage.push()
                 	}
          }
         }
       }
       
-    stage('Deploy') {
+    stage('Deploy to ECS') {
      steps{
-            withAWS(credentials: registryCredential, region: "${AWS_DEFAULT_REGION}") {
+            withAWS(credentials: registryCredentialAws, region: "${AWS_DEFAULT_REGION}") {
                 script {
 			sh './script.sh'
                 }
@@ -53,4 +59,3 @@ pipeline {
       
     }
 }
-
