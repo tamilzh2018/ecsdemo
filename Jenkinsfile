@@ -8,7 +8,7 @@ pipeline {
 	TASK_DEFINITION_NAME="imagedeploy-task"
 	DESIRED_COUNT="1"
         IMAGE_REPO_NAME="docimage"
-        IMAGE_TAG="latest"
+        IMAGE_TAG="node-latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 	registryCredential = "aws-cred"
     }
