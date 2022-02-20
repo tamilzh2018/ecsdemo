@@ -3,23 +3,27 @@ pipeline {
     environment {
         AWS_ACCOUNT_ID="711327469867"
         AWS_DEFAULT_REGION="ap-south-1" 
-		CLUSTER_NAME="imagedeploy-demo"
-		SERVICE_NAME="imagedeploy-service"
-		TASK_DEFINITION_NAME="imagedeploy-task"
-		DESIRED_COUNT="1"
+	CLUSTER_NAME="imagedeploy-demo"
+	SERVICE_NAME="imagedeploy-service"
+	TASK_DEFINITION_NAME="imagedeploy-task"
+	DESIRED_COUNT="1"
         IMAGE_REPO_NAME="docimage"
         IMAGE_TAG="latest"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
-		registryCredential = "aws-cred"
+	registryCredential = "aws-cred"
     }
    
     stages {
 
-    stage('Cloning Git') {
-            steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/myPythonDockerRepo']]])     
-            }
+    // Tests
+    stage('Unit Tests') {
+      steps{
+        script {
+          sh 'npm install'
+	  sh 'npm test -- --watchAll=false'
         }
+      }
+    }
         
     // Building Docker images
     stage('Building image') {
