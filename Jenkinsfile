@@ -15,15 +15,11 @@ pipeline {
    
     stages {
 
-    // Tests
-    stage('Unit Tests') {
-      steps{
-        script {
-          sh 'npm install'
-	  sh 'npm test -- --watchAll=false'
+    stage('Cloning Git') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/akannan1087/myPythonDockerRepo']]])     
+            }
         }
-      }
-    }
         
     // Building Docker images
     stage('Building image') {
