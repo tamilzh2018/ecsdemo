@@ -12,7 +12,6 @@ pipeline {
 	registry = "repository/ediig-docker-hosted"
         registryCredential = 'nexus-admin'	    
         //REPOSITORY_URI = "http://3.110.241.185:1111/repository/ediig-docker-hosted/"
-	registryCredential = "nexus-admin"
 	registryCredentialAws = "AdminIAM"
 	    
     }
