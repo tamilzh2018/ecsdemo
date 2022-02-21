@@ -9,7 +9,7 @@ pipeline {
 	DESIRED_COUNT="1"
         IMAGE_REPO_NAME="image"
         IMAGE_TAG="${env.BUILD_ID}"
-        REPOSITORY_URI = "192.168.43.99:8081/repository/image/"
+        REPOSITORY_URI = "192.168.43.99:8083/repository/image/"
 	registryCredential = "nexus-admin"
 	registryCredentialAws = "aws-cred"
 	    
