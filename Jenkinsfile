@@ -10,7 +10,7 @@ pipeline {
         IMAGE_REPO_NAME="image"
         IMAGE_TAG="${env.BUILD_ID}"
 	//registry = "repository/ediig-docker-hosted"
-        registryCredential = 'nexus-admin'	    
+        //registryCredential = 'nexus-admin'	    
         //REPOSITORY_URI = "http://3.110.241.185:1111/repository/ediig-docker-hosted/"
 	REPOSITORY_URI =   "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
 	registryCredentialAws = "AdminIAM"
@@ -42,7 +42,7 @@ pipeline {
     stage('Pushing to Nexus') {
      steps{  
          script {
-			docker.withRegistry("https://" + REPOSITORY_URI, "ecr:${AWS_DEFAULT_REGION}:" + registryCredential) {
+			docker.withRegistry("https://" + REPOSITORY_URI, "ecr:${AWS_DEFAULT_REGION}:" + registryCredentialAws) {
                     	dockerImage.push()
                 	}
          }
