@@ -40,7 +40,7 @@ pipeline {
     stage('Pushing to Nexus') {
      steps{  
          script {
-			docker.withRegistry("REPOSITORY_URI + registryCredential) {
+			docker.withRegistry(REPOSITORY_URI + registryCredential) {
                     	dockerImage.push()
                 	}
          }
