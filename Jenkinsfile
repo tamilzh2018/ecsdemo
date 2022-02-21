@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCOUNT_ID="711327469867"
+        AWS_ACCOUNT_ID="975639581513"
         AWS_DEFAULT_REGION="ap-south-1" 
 	CLUSTER_NAME="ecs-demo-cluster"
 	SERVICE_NAME="ecs-demo-cluster-service"
@@ -9,9 +9,9 @@ pipeline {
 	DESIRED_COUNT="1"
         IMAGE_REPO_NAME="image"
         IMAGE_TAG="${env.BUILD_ID}"
-        REPOSITORY_URI = "192.168.43.99:8083/repository/image/"
+        REPOSITORY_URI = "http://3.110.241.185:1111/repository/ediig-docker-hosted/"
 	registryCredential = "nexus-admin"
-	registryCredentialAws = "aws-cred"
+	registryCredentialAws = "AdminIAM"
 	    
     }
    
