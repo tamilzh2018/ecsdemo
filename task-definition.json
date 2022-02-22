@@ -1,5 +1,5 @@
 {
-    "family": "ecr-demo-ec2",
+    "family": "ecr-demo-EC2",
     "containerDefinitions": [
         {
             "image": "REPOSITORY_URI:BUILD_NUMBER",
@@ -16,7 +16,7 @@
     "cpu": "256",
     "memory": "512",
     "requiresCompatibilities": [
-             "ec2"
+             "EC2"
     ],
     "networkMode": "bridge",
     "executionRoleArn": "{{ecsTaskExecutionRoleArn}}"
